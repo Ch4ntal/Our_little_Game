@@ -2,11 +2,13 @@ package main;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class KeyHandler implements KeyListener {
+public class KeyHandler implements KeyListener, MouseListener {
 
-    public boolean upPressed;
-    public boolean downPressed;
+    public boolean jumpPressed;
+    public boolean hitPressed;
     public boolean leftPressed;
     public boolean rightPressed;
 
@@ -19,16 +21,10 @@ public class KeyHandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int code =e.getKeyCode();
 
-        if(code ==KeyEvent.VK_W) {
-            upPressed = true;
+        if(code ==KeyEvent.VK_SPACE) {
+            jumpPressed = true;
 
         }
-
-        if(code ==KeyEvent.VK_S) {
-            downPressed = true;
-
-        }
-
         if(code ==KeyEvent.VK_A) {
             leftPressed = true;
 
@@ -46,12 +42,8 @@ public class KeyHandler implements KeyListener {
 
         int code = e.getKeyCode();
 
-        if(code ==KeyEvent.VK_W) {
-            upPressed = false;
-
-        }
-        if(code ==KeyEvent.VK_S) {
-            downPressed = false;
+        if(code ==KeyEvent.VK_SPACE) {
+            jumpPressed = false;
 
         }
         if(code ==KeyEvent.VK_A) {
@@ -62,5 +54,40 @@ public class KeyHandler implements KeyListener {
             rightPressed = false;
 
         }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        int button = e.getButton();
+        if (button == MouseEvent.BUTTON1) {
+            hitPressed = true;
+        }
+
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        int button = e.getButton();
+        if (button == MouseEvent.BUTTON1) {
+            hitPressed = false;
+        }
+
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }
