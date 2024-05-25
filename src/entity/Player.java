@@ -28,7 +28,7 @@ public class Player extends Entity{
         y=100;
         speed = 4;
         direction = "nothing";
-        gravity = 1.05;
+        gravity = 0;
         jumpheight = 8;
     }
     public void getPlayerImage() {
@@ -68,6 +68,10 @@ public class Player extends Entity{
             nothing2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_nothing_2.png"));
             nothing3 = ImageIO.read(getClass().getResourceAsStream("/player/boy_nothing_3.png"));
 
+            //down1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_1.png"));
+            //down2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_2.png"));
+            //down3 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_3.png"));
+
 
 
         } catch(IOException e){
@@ -103,6 +107,11 @@ public class Player extends Entity{
         else if(keyH.rightPressed) {
             direction = "right";
             x += speed;
+        }
+        else if (keyH.downPressed){
+            direction = "down";
+            y += speed;
+
         }
         else {
             direction = "nothing";
@@ -208,6 +217,18 @@ public class Player extends Entity{
                 }
                 if (spriteNum == 3 || spriteNum == 6) {
                     image = left3;
+                }
+                break;
+
+            case "down":
+                if (spriteNum ==1 || spriteNum == 4) {
+                    image = down1;
+                }
+                if (spriteNum == 2 || spriteNum == 5) {
+                    image = down2;
+                }
+                if (spriteNum == 3 || spriteNum == 6) {
+                    image = down3;
                 }
                 break;
 

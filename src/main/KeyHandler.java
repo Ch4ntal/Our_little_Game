@@ -11,6 +11,7 @@ public class KeyHandler implements KeyListener, MouseListener {
     public boolean hitPressed;
     public boolean leftPressed;
     public boolean rightPressed;
+    public boolean downPressed;
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -34,6 +35,9 @@ public class KeyHandler implements KeyListener, MouseListener {
             rightPressed = true;
 
         }
+        if(code ==KeyEvent.VK_S) {
+            downPressed = true;
+        }
 
     }
 
@@ -52,6 +56,10 @@ public class KeyHandler implements KeyListener, MouseListener {
         }
         if(code ==KeyEvent.VK_D) {
             rightPressed = false;
+
+        }
+        if (code ==KeyEvent.VK_S) {
+            downPressed = false;
 
         }
     }
