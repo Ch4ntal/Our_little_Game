@@ -11,7 +11,7 @@ public class Sound {
     URL soundURL[] = new URL[30];
 
     public Sound(){
-        soundURL[0] = getClass().getResource("/sound/Ouch-6.wav");
+        soundURL[0] = getClass().getResource("/sound/Dragonexplorer.wav");
     }
     public void setFile(int i) {
         try {
