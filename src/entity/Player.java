@@ -13,9 +13,15 @@ public class Player extends Entity{
     GamePanel gp;
     KeyHandler keyH;
 
+    public final int screenX;
+    public final int screenY;
+
+
     public Player (GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
+        screenX = gp.screenWidth/2 - (gp.playerheight/2);
+        screenY = gp.screenHeight/2 - (gp.playerwidth/2);
 
         setDefaultValues();
         getPlayerImage();
@@ -24,8 +30,9 @@ public class Player extends Entity{
 
     public void setDefaultValues() {
 
-        x=100;
-        y=100;
+        //Startpoint:
+        worldX= gp.tileSize * 23;
+        worldY= gp.tileSize * 21;
         speed = 4;
         direction = "nothing";
         gravity = 0;
@@ -85,12 +92,12 @@ public class Player extends Entity{
         if (keyH.jumpPressed) {
             if (keyH.leftPressed) {
                 direction = "jumpleft";
-                y -= jumpheight;
+               worldY-= jumpheight;
 
             } else {
 
                 direction = "jumpright";
-                y -= jumpheight;
+               worldY-= jumpheight;
 
             }
         }
@@ -102,15 +109,15 @@ public class Player extends Entity{
         }
         else if(keyH.leftPressed) {
             direction = "left";
-            x -= speed;
+           worldX-= speed;
         }
         else if(keyH.rightPressed) {
             direction = "right";
-            x += speed;
+           worldX+= speed;
         }
         else if (keyH.downPressed){
             direction = "down";
-            y += speed;
+           worldY+= speed;
 
         }
         else {
@@ -126,7 +133,12 @@ public class Player extends Entity{
             }
             spriteCounter=0;
         }
-        y += gravity;
+       worldY+= gravity;
+    }
+    public void pickUpObject(int i) {
+        if (i != 999) {
+
+        }
     }
 
     public void draw(Graphics2D g2){
@@ -245,7 +257,7 @@ public class Player extends Entity{
                 break;
 
         }
-        g2.drawImage(image, x,y ,gp.playerwidth, gp.playerheight, null);
+        g2.drawImage(image, screenX,screenY ,gp.playerwidth, gp.playerheight, null);
 
     }
 

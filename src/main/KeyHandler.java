@@ -7,11 +7,16 @@ import java.awt.event.MouseListener;
 
 public class KeyHandler implements KeyListener, MouseListener {
 
+    GamePanel gp;
     public boolean jumpPressed;
     public boolean hitPressed;
     public boolean leftPressed;
     public boolean rightPressed;
     public boolean downPressed;
+
+    public KeyHandler(GamePanel gp) {
+        this.gp =gp;
+    }
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -20,25 +25,58 @@ public class KeyHandler implements KeyListener, MouseListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        int code =e.getKeyCode();
+        int code = e.getKeyCode();
 
-        if(code ==KeyEvent.VK_SPACE) {
+        if(gp.gameState == gp.titleState) {
+            if (code == KeyEvent.VK_W){
+                gp.ui.commandNum--;
+                if(gp.ui.commandNum < 0) {
+                    gp.ui.commandNum = 2;
+                }
+            }
+            if(code == KeyEvent.VK_S){
+                gp.ui.commandNum++;
+                if(gp.ui.commandNum >2) {
+                    gp.ui.commandNum =0;
+                }
+            }
+            if(code == KeyEvent.VK_ENTER) {
+                if(gp.ui.commandNum == 0) {
+                    gp.gameState = gp.playState;
+                    gp.playMusic(0);
+                }
+                if(gp.ui.commandNum == 1){
+                    //add later
+                }
+                if(gp.ui.commandNum == 2){
+                    System.exit(0);
+                }
+            }
+        }
+
+        if (code == KeyEvent.VK_SPACE) {
             jumpPressed = true;
 
         }
-        if(code ==KeyEvent.VK_A) {
+        if (code == KeyEvent.VK_A) {
             leftPressed = true;
 
         }
 
-        if(code ==KeyEvent.VK_D) {
+        if (code == KeyEvent.VK_D) {
             rightPressed = true;
 
         }
-        if(code ==KeyEvent.VK_S) {
+        if (code == KeyEvent.VK_S) {
             downPressed = true;
         }
-
+        if (code == KeyEvent.VK_ESCAPE) {
+            if (gp.gameState == gp.playState) {
+                gp.gameState = gp.pauseState;
+            } else if (gp.gameState == gp.pauseState) {
+                gp.gameState = gp.playState;
+            }
+        }
     }
 
     @Override

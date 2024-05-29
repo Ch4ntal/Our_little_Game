@@ -2,6 +2,7 @@ package main;
 
 import entity.Player;
 import main.tile.TileManager;
+import main.UI;
 
 import javax.swing.JPanel;
 import java.awt.*;
@@ -21,12 +22,26 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenWidth = tileSize * maxScreenCol; // 1024 pixels
     public final int screenHeight = tileSize * maxScreenRow; // 768 pixels
 
+    // World Settings
+    public final int maxWorldCol = 48;
+    public final int maxWorldRow = 48;
+    public final int worldWidth = tileSize * maxWorldCol;
+    public final int worldHeight = tileSize * maxWorldRow;
+
     //FPS
     int FPS = 60;
     TileManager tileM = new TileManager(this);
-    KeyHandler keyH = new KeyHandler();
+    KeyHandler keyH = new KeyHandler(this);
+    Sound sound = new Sound();
+    public UI ui = new UI(this);
     Thread gameThread;
-    Player player = new Player(this,keyH);
+    public Player player = new Player(this,keyH);
+
+    //GAME STATE
+    public int gameState;
+    public final int titleState = 0;
+    public final int playState =1;
+    public final int pauseState =2;
 
     //set players default position
     int playerX = 100;
@@ -42,6 +57,14 @@ public class GamePanel extends JPanel implements Runnable {
         this.addKeyListener(keyH);
         this.setFocusable(true);
         this.addMouseListener(keyH);
+    }
+
+    public void setupGame() {
+        gameState = playState;
+
+        playMusic(0);
+        gameState = titleState;
+
     }
 
     public void startGameThread() {
@@ -85,7 +108,12 @@ public class GamePanel extends JPanel implements Runnable {
     }
     public void update() {
 
-        player.update();
+        if (gameState == playState) {
+            player.update();
+        }
+        if (gameState == pauseState) {
+            // nothing --> no playerupdate
+        }
 
 
     }
@@ -93,13 +121,35 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
+        // TITLE SCREEN
+        if (gameState == titleState) {
+            ui.draw(g2);
 
-        tileM.draw(g2);
+        } else {
+            //Tile
+            tileM.draw(g2);
+            //player
+            player.draw(g2);
 
-        player.draw(g2);
+            //UI
+            ui.draw(g2);
 
-        g2.dispose();
+            g2.dispose();
+        }
 
 
+
+    }
+    public void playMusic(int i) {
+        sound.setFile(i);
+        sound.play();
+        sound.loop();
+    }
+    public void stopMusic() {
+        sound.stop();
+    }
+    public void playSE(int i){
+        sound.setFile(i);
+        sound.play();
     }
 }
