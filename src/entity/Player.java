@@ -2,6 +2,7 @@ package entity;
 
         import main.GamePanel;
         import main.KeyHandler;
+        import main.UtilityTool;
 
         import javax.imageio.ImageIO;
         import java.awt.*;
@@ -20,8 +21,14 @@ public class Player extends Entity{
     public Player (GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
-        screenX = gp.screenWidth/2 - (gp.playerheight/2);
-        screenY = gp.screenHeight/2 - (gp.playerwidth/2);
+        screenX = gp.screenWidth/2 - (gp.playerwidth/2);
+        screenY = gp.screenHeight/2 - (gp.playerheight/2);
+
+        solidArea = new Rectangle();
+        solidArea.x = 14;
+        solidArea.y = 52;
+        solidArea.width = 15;
+        solidArea.height = 20;
 
         setDefaultValues();
         getPlayerImage();
@@ -31,8 +38,8 @@ public class Player extends Entity{
     public void setDefaultValues() {
 
         //Startpoint:
-        worldX= gp.tileSize * 23;
-        worldY= gp.tileSize * 21;
+        worldX= gp.tileSize * 58;
+        worldY= gp.tileSize * 47;
         speed = 4;
         direction = "nothing";
         gravity = 0;
@@ -40,88 +47,76 @@ public class Player extends Entity{
     }
     public void getPlayerImage() {
 
+        up1 = setup("boy_up_1");
+        up2 = setup("boy_up_2");
+        up3 = setup("boy_up_3");
+        left1 = setup("boy_left_1");
+        left2  = setup("boy_left_2");
+        left3 = setup("boy_left_3");
+        right1 = setup("boy_right_1");
+        right2 = setup("boy_right_2");
+        right3 = setup("boy_right_3");
+        down1 = setup("boy_down_1");
+        down2 = setup("boy_down_2");
+        nothing1 = setup("boy_nothing_1");
+        nothing2 = setup("boy_nothing_2");
+        nothing3 = setup("boy_nothing_3");
+    }
 
-        try {
-            jumpright1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_jump_1.png"));
-            jumpright2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_jump_right_2.png"));
+    public BufferedImage setup(String imageName) {
 
-            jumpleft1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_jump_left_1.png"));
-            jumpleft2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_jump_left_2.png"));
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage image = null;
 
-            left1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_1.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_2.png"));
-            left3 = ImageIO.read(getClass().getResourceAsStream("/player/boy_left_3.png"));
+        try{
+            image = ImageIO.read(getClass().getResourceAsStream("/player/"+ imageName +".png"));
+            image = uTool.scaleImage(image, gp.playerwidth, gp.playerheight);
 
-            hitright1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_hit_right_1.png"));
-            hitright2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_hit_right_2.png"));
-            hitright2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_hit_right_2.png"));
-            hitright3 = ImageIO.read(getClass().getResourceAsStream("/player/boy_hit_right_3.png"));
-            hitright4 = ImageIO.read(getClass().getResourceAsStream("/player/boy_hit_right_4.png"));
-            hitright5 = ImageIO.read(getClass().getResourceAsStream("/player/boy_hit_right_5.png"));
-            hitright6 = ImageIO.read(getClass().getResourceAsStream("/player/boy_hit_right_6.png"));
-
-            hitleft1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_hit_left_1.png"));
-            hitleft2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_hit_left_2.png"));
-            hitleft3 = ImageIO.read(getClass().getResourceAsStream("/player/boy_hit_left_3.png"));
-            hitleft4 = ImageIO.read(getClass().getResourceAsStream("/player/boy_hit_left_4.png"));
-            hitleft5 = ImageIO.read(getClass().getResourceAsStream("/player/boy_hit_left_5.png"));
-            hitleft6 = ImageIO.read(getClass().getResourceAsStream("/player/boy_hit_left_6.png"));
-
-            right1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_1.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_2.png"));
-            right3 = ImageIO.read(getClass().getResourceAsStream("/player/boy_right_3.png"));
-
-            nothing1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_nothing_1.png"));
-            nothing2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_nothing_2.png"));
-            nothing3 = ImageIO.read(getClass().getResourceAsStream("/player/boy_nothing_3.png"));
-
-            //down1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_1.png"));
-            //down2 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_2.png"));
-            //down3 = ImageIO.read(getClass().getResourceAsStream("/player/boy_down_3.png"));
-
-
-
-        } catch(IOException e){
+        }catch (IOException e){
             e.printStackTrace();
         }
-
+        return image;
     }
 
 
     public void update(){
-        if (keyH.jumpPressed) {
-            if (keyH.leftPressed) {
-                direction = "jumpleft";
-               worldY-= jumpheight;
-
-            } else {
-
-                direction = "jumpright";
-               worldY-= jumpheight;
-
-            }
-        }
-        else if(keyH.hitPressed) {
-
-                direction = "hitright";
-
+        if (keyH.upPressed) {
+                direction = "up";
 
         }
         else if(keyH.leftPressed) {
             direction = "left";
-           worldX-= speed;
         }
         else if(keyH.rightPressed) {
             direction = "right";
-           worldX+= speed;
         }
         else if (keyH.downPressed){
             direction = "down";
-           worldY+= speed;
-
         }
         else {
             direction = "nothing";
+        }
+
+        // CHECK TILE COLLISION
+        collisionOn = false;
+        gp.cChecker.checkTile(this);
+
+        // IF COLLISION = FALSE, Player can move
+        if (collisionOn == false) {
+            switch(direction) {
+                case "up":
+                    worldY-= speed;
+                    break;
+                case "down":
+                    worldY+= speed;
+                    break;
+                case "right":
+                    worldX+= speed;
+                    break;
+                case "left":
+                    worldX-= speed;
+                    break;
+            }
         }
         spriteCounter++;
         if (spriteCounter >12) {
@@ -148,63 +143,16 @@ public class Player extends Entity{
         BufferedImage image = null;
 
         switch (direction) {
-            case "jumpleft":
-                if(spriteNum ==1 || spriteNum==3 || spriteNum ==5) {
-                    image = jumpleft1;
-                }
-                if (spriteNum == 2 || spriteNum == 4 || spriteNum == 6) {
-                    image = jumpleft2;
-                }
-                break;
 
-            case "jumpright":
-                if(spriteNum ==1 || spriteNum==3 || spriteNum ==5) {
-                    image = jumpright1;
+            case "up":
+                if (spriteNum == 1 || spriteNum == 4) {
+                    image = up1;
                 }
-                if (spriteNum == 2 || spriteNum == 4 || spriteNum == 6) {
-                    image = jumpright2;
+                if (spriteNum == 2 || spriteNum == 5) {
+                    image = up2;
                 }
-                break;
-
-            case "hitright" :
-                if(spriteNum == 1) {
-                    image = hitright1;
-                }
-                if (spriteNum == 2) {
-                    image = hitright2;
-                }
-                if (spriteNum == 3) {
-                    image = hitright3;
-                }
-                if (spriteNum == 4) {
-                    image = hitright4;
-                }
-                if (spriteNum == 5) {
-                    image = hitright5;
-                }
-                if (spriteNum == 6) {
-                    image = hitright6;
-                }
-                break;
-
-            case "hitleft" :
-                if(spriteNum == 1) {
-                    image = hitleft1;
-                }
-                if (spriteNum == 2) {
-                    image = hitleft2;
-                }
-                if (spriteNum == 3) {
-                    image = hitleft3;
-                }
-                if (spriteNum == 4) {
-                    image = hitleft4;
-                }
-                if (spriteNum == 5) {
-                    image = hitleft5;
-                }
-                if (spriteNum == 6) {
-                    image = hitleft6;
+                if (spriteNum == 3 || spriteNum == 6) {
+                    image = up3;
                 }
                 break;
 
@@ -237,10 +185,10 @@ public class Player extends Entity{
                     image = down1;
                 }
                 if (spriteNum == 2 || spriteNum == 5) {
-                    image = down2;
+                    image = nothing1;
                 }
                 if (spriteNum == 3 || spriteNum == 6) {
-                    image = down3;
+                    image = down2;
                 }
                 break;
 
@@ -257,7 +205,7 @@ public class Player extends Entity{
                 break;
 
         }
-        g2.drawImage(image, screenX,screenY ,gp.playerwidth, gp.playerheight, null);
+        g2.drawImage(image, screenX,screenY , null);
 
     }
 

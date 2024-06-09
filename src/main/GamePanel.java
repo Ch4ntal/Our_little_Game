@@ -23,8 +23,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenHeight = tileSize * maxScreenRow; // 768 pixels
 
     // World Settings
-    public final int maxWorldCol = 48;
-    public final int maxWorldRow = 48;
+    public  int maxWorldCol =100;
+    public  int maxWorldRow =100;
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
 
@@ -35,6 +35,7 @@ public class GamePanel extends JPanel implements Runnable {
     Sound sound = new Sound();
     public UI ui = new UI(this);
     Thread gameThread;
+    public CollisionChecker cChecker = new CollisionChecker(this);
     public Player player = new Player(this,keyH);
 
     //GAME STATE

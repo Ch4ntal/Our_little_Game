@@ -8,7 +8,7 @@ import java.awt.event.MouseListener;
 public class KeyHandler implements KeyListener, MouseListener {
 
     GamePanel gp;
-    public boolean jumpPressed;
+    public boolean upPressed;
     public boolean hitPressed;
     public boolean leftPressed;
     public boolean rightPressed;
@@ -54,8 +54,8 @@ public class KeyHandler implements KeyListener, MouseListener {
             }
         }
 
-        if (code == KeyEvent.VK_SPACE) {
-            jumpPressed = true;
+        if (code == KeyEvent.VK_W) {
+            upPressed = true;
 
         }
         if (code == KeyEvent.VK_A) {
@@ -84,8 +84,8 @@ public class KeyHandler implements KeyListener, MouseListener {
 
         int code = e.getKeyCode();
 
-        if(code ==KeyEvent.VK_SPACE) {
-            jumpPressed = false;
+        if(code ==KeyEvent.VK_W) {
+            upPressed = false;
 
         }
         if(code ==KeyEvent.VK_A) {

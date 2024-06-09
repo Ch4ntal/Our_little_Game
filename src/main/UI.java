@@ -71,6 +71,8 @@ public class UI {
 
         //MENU
         g2.setFont(g2.getFont().deriveFont(Font.BOLD,40F));
+
+
         text = "START GAME";
         x = getXforCenteredText(text);
         y += gp.tileSize*3.5;
