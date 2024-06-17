@@ -1,9 +1,15 @@
 package entity;
 
+import main.GamePanel;
+import main.UtilityTool;
+
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class Entity {
+    GamePanel gp;
     public int worldX,worldY;
     public int speed;
     public double gravity;
@@ -14,14 +20,101 @@ public class Entity {
     // public BufferedImage hitleft1, hitleft2, hitleft3, hitleft4, hitleft5, hitleft6;
     public BufferedImage left1, left2, left3;
     public BufferedImage right1, right2, right3;
-    public BufferedImage down1, down2, down3;
+    public BufferedImage down1, down2;
     public BufferedImage nothing1, nothing2, nothing3;
 
     public String direction;
 
     public int spriteCounter = 0;
     public int spriteNum = 1;
-    public Rectangle solidArea;
+    public Rectangle solidArea = new Rectangle(0,0,30,50);
     public boolean collisionOn = false;
+
+    public int solidAreaDefaultX, solidAreaDefaultY;
+
+    public Entity(GamePanel gp){
+        this.gp = gp;
+    }
+
+
+    public void draw(Graphics2D g2){
+
+        BufferedImage image = null;
+
+        int screenX = worldX - gp.player.worldX + gp.player.screenX;
+        int screenY = worldY - gp.player.worldY + gp.player.screenY;
+
+        if (worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
+            worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
+            worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
+            worldY - gp.tileSize < gp.player.worldY + gp.player.screenY) {
+
+            switch (direction) {
+
+                case "nothing":
+                    if (spriteNum == 1 || spriteNum == 3 || spriteNum == 5) {
+                        image = nothing1;
+                    }
+                    if (spriteNum == 2 || spriteNum == 4 || spriteNum == 6) {
+                        image = nothing2;
+                    }
+                    break;
+
+                case "up":
+                    if (spriteNum == 1 || spriteNum == 4) {
+                        image = up1;
+                    }
+                    if (spriteNum == 2 || spriteNum == 5) {
+                        image = up2;
+                    }
+                    if (spriteNum == 3 || spriteNum == 6) {
+                        image = up3;
+                    }
+                    break;
+
+                case "right":
+                    if (spriteNum == 1 || spriteNum == 4) {
+                        image = right1;
+                    }
+                    if (spriteNum == 2 || spriteNum == 5) {
+                        image = right2;
+                    }
+                    if (spriteNum == 3 || spriteNum == 6) {
+                        image = right3;
+                    }
+                    break;
+
+                case "left":
+                    if (spriteNum == 1 || spriteNum == 4) {
+                        image = left1;
+                    }
+                    if (spriteNum == 2 || spriteNum == 5) {
+                        image = left1;
+                    }
+                    if (spriteNum == 3 || spriteNum == 6) {
+                        image = left3;
+                    }
+                    break;
+
+                case "down":
+                    if (spriteNum ==1 || spriteNum == 4) {
+                        image = down1;
+                    }
+                    if (spriteNum == 2 || spriteNum == 5) {
+                        image = nothing1;
+                    }
+                    if (spriteNum == 3 || spriteNum == 6) {
+                        image = down2;
+                    }
+                    break;
+
+
+
+            }
+
+            g2.drawImage(image, screenX, screenY, 52, 81, null);
+        }
+
+    }
 
 }

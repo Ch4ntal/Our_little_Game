@@ -1,5 +1,6 @@
 package main;
 
+import entity.Entity;
 import entity.Player;
 import main.tile.TileManager;
 import main.UI;
@@ -35,8 +36,11 @@ public class GamePanel extends JPanel implements Runnable {
     Sound sound = new Sound();
     public UI ui = new UI(this);
     Thread gameThread;
+    public AssetSetter aSetter = new AssetSetter(this);
     public CollisionChecker cChecker = new CollisionChecker(this);
     public Player player = new Player(this,keyH);
+
+    public Entity npc[] = new Entity[10];
 
     //GAME STATE
     public int gameState;
@@ -63,7 +67,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void setupGame() {
 
         gameState = titleState;
-
+        aSetter.setNPC();
     }
 
     public void startGameThread() {
@@ -109,6 +113,13 @@ public class GamePanel extends JPanel implements Runnable {
 
         if (gameState == playState) {
             player.update();
+            //NPC
+            for(int i = 0; i < npc.length; i++){
+                if(npc[i] != null){
+                    //npc[i].update();
+                }
+            }
+
         }
         if (gameState == pauseState) {
             // nothing --> no playerupdate
@@ -127,6 +138,14 @@ public class GamePanel extends JPanel implements Runnable {
         } else {
             //Tile
             tileM.draw(g2);
+
+            //NPC
+            for (int i = 0; i <  npc.length; i++){
+                if(npc[i] != null) {
+                    npc[i].draw(g2);
+                }
+            }
+
             //player
             player.draw(g2);
 
