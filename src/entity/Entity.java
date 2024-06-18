@@ -27,13 +27,47 @@ public class Entity {
 
     public int spriteCounter = 0;
     public int spriteNum = 1;
-    public Rectangle solidArea = new Rectangle(0,0,30,50);
+    public Rectangle solidArea = new Rectangle(8,0,42,80);
     public boolean collisionOn = false;
 
     public int solidAreaDefaultX, solidAreaDefaultY;
 
     public Entity(GamePanel gp){
         this.gp = gp;
+    }
+
+    public void update() {
+
+        collisionOn = false;
+        gp.cChecker.checkTile(this);
+
+        // IF COLLISION = FALSE, Player can move
+        if (collisionOn == false) {
+            switch(direction) {
+                case "up":
+                    worldY-= speed;
+                    break;
+                case "down":
+                    worldY+= speed;
+                    break;
+                case "right":
+                    worldX+= speed;
+                    break;
+                case "left":
+                    worldX-= speed;
+                    break;
+            }
+        }
+        spriteCounter++;
+        if (spriteCounter >12) {
+            if (spriteNum < 6) {
+                spriteNum ++;
+            }
+            else if (spriteNum >=6){
+                spriteNum=1;
+            }
+            spriteCounter=0;
+        }
     }
 
 
