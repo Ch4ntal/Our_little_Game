@@ -31,6 +31,8 @@ public class Entity {
     public boolean collisionOn = false;
 
     public int solidAreaDefaultX, solidAreaDefaultY;
+    String dialogues[] = new String [20];
+    public int dialogueIndex = 0;
 
     public Entity(GamePanel gp){
         this.gp = gp;
@@ -68,6 +70,10 @@ public class Entity {
             }
             spriteCounter=0;
         }
+    }
+
+    public void speak() {
+
     }
 
 

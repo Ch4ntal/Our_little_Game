@@ -10,18 +10,18 @@ package entity;
         import java.io.IOException;
         import java.util.Objects;
 
-public class Player extends Entity{
+public class Player extends Entity {
     KeyHandler keyH;
 
     public final int screenX;
     public final int screenY;
 
 
-    public Player (GamePanel gp, KeyHandler keyH) {
+    public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
         this.keyH = keyH;
-        screenX = gp.screenWidth/2 - (gp.playerwidth/2);
-        screenY = gp.screenHeight/2 - (gp.playerheight/2);
+        screenX = gp.screenWidth / 2 - (gp.playerwidth / 2);
+        screenY = gp.screenHeight / 2 - (gp.playerheight / 2);
 
         solidArea = new Rectangle();
         solidArea.x = 14;
@@ -39,20 +39,21 @@ public class Player extends Entity{
     public void setDefaultValues() {
 
         //Startpoint:
-        worldX= gp.tileSize * 17;
-        worldY= gp.tileSize * 57;
+        worldX = gp.tileSize * 17;
+        worldY = gp.tileSize * 57;
         speed = 4;
         direction = "nothing";
         gravity = 0;
         jumpheight = 8;
     }
+
     public void getPlayerImage() {
 
         up1 = setup("/player/boy_up_1");
         up2 = setup("/player/boy_up_2");
         up3 = setup("/player/boy_up_3");
         left1 = setup("/player/boy_left_1");
-        left2  = setup("/player/boy_left_2");
+        left2 = setup("/player/boy_left_2");
         left3 = setup("/player/boy_left_3");
         right1 = setup("/player/boy_right_1");
         right2 = setup("/player/boy_right_2");
@@ -69,34 +70,28 @@ public class Player extends Entity{
         UtilityTool uTool = new UtilityTool();
         BufferedImage image = null;
 
-        try{
-            image = ImageIO.read(getClass().getResourceAsStream( imagePath +".png"));
+        try {
+            image = ImageIO.read(getClass().getResourceAsStream(imagePath + ".png"));
             image = uTool.scaleImage(image, gp.playerwidth, gp.playerheight);
 
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return image;
     }
 
 
-
-
-    public void update(){
+    public void update() {
         if (keyH.upPressed) {
-                direction = "up";
+            direction = "up";
 
-        }
-        else if(keyH.leftPressed) {
+        } else if (keyH.leftPressed) {
             direction = "left";
-        }
-        else if(keyH.rightPressed) {
+        } else if (keyH.rightPressed) {
             direction = "right";
-        }
-        else if (keyH.downPressed){
+        } else if (keyH.downPressed) {
             direction = "down";
-        }
-        else {
+        } else {
             direction = "nothing";
         }
 
@@ -105,39 +100,39 @@ public class Player extends Entity{
         gp.cChecker.checkTile(this);
 
         // CHECK NPC OR MONSTER COLLISION
-        int npcIndex = gp.cChecker.checkEntity(this,gp.npc);
+        int npcIndex = gp.cChecker.checkEntity(this, gp.npc);
         interactNPC(npcIndex);
 
 
         // IF COLLISION = FALSE, Player can move
         if (collisionOn == false) {
-            switch(direction) {
+            switch (direction) {
                 case "up":
-                    worldY-= speed;
+                    worldY -= speed;
                     break;
                 case "down":
-                    worldY+= speed;
+                    worldY += speed;
                     break;
                 case "right":
-                    worldX+= speed;
+                    worldX += speed;
                     break;
                 case "left":
-                    worldX-= speed;
+                    worldX -= speed;
                     break;
             }
         }
         spriteCounter++;
-        if (spriteCounter >12) {
+        if (spriteCounter > 12) {
             if (spriteNum < 6) {
-                spriteNum ++;
+                spriteNum++;
+            } else if (spriteNum >= 6) {
+                spriteNum = 1;
             }
-            else if (spriteNum >=6){
-                spriteNum=1;
-            }
-            spriteCounter=0;
+            spriteCounter = 0;
         }
-       worldY+= gravity;
+        worldY += gravity;
     }
+
     public void pickUpObject(int i) {
         if (i != 999) {
 
@@ -146,83 +141,87 @@ public class Player extends Entity{
 
     public void interactNPC(int i) {
         if (i != 999) {
-            //  gp.gameState = gp.dialogueState;
+
+            if (gp.keyH.enterPressed == true) {
+                gp.gameState = gp.dialogueState; //  gp.gameState = gp.dialogueState;
+                gp.npc[i].speak();
+            }
         }
     }
 
 
+        public void draw (Graphics2D g2){
+            //  g2.setColor(Color.white);
+            // g2.fillRect(x,y,gp.tileSize,gp.tileSize);
 
-        public void draw(Graphics2D g2){
-        //  g2.setColor(Color.white);
-        // g2.fillRect(x,y,gp.tileSize,gp.tileSize);
+            BufferedImage image = null;
 
-        BufferedImage image = null;
+            switch (direction) {
 
-        switch (direction) {
+                case "up":
+                    if (spriteNum == 1 || spriteNum == 4) {
+                        image = up1;
+                    }
+                    if (spriteNum == 2 || spriteNum == 5) {
+                        image = up2;
+                    }
+                    if (spriteNum == 3 || spriteNum == 6) {
+                        image = up3;
+                    }
+                    break;
 
-            case "up":
-                if (spriteNum == 1 || spriteNum == 4) {
-                    image = up1;
-                }
-                if (spriteNum == 2 || spriteNum == 5) {
-                    image = up2;
-                }
-                if (spriteNum == 3 || spriteNum == 6) {
-                    image = up3;
-                }
-                break;
+                case "right":
+                    if (spriteNum == 1 || spriteNum == 4) {
+                        image = right1;
+                    }
+                    if (spriteNum == 2 || spriteNum == 5) {
+                        image = right2;
+                    }
+                    if (spriteNum == 3 || spriteNum == 6) {
+                        image = right3;
+                    }
+                    break;
 
-            case "right":
-                if (spriteNum == 1 || spriteNum == 4) {
-                    image = right1;
-                }
-                if (spriteNum == 2 || spriteNum == 5) {
-                    image = right2;
-                }
-                if (spriteNum == 3 || spriteNum == 6) {
-                    image = right3;
-                }
-                break;
+                case "left":
+                    if (spriteNum == 1 || spriteNum == 4) {
+                        image = left1;
+                    }
+                    if (spriteNum == 2 || spriteNum == 5) {
+                        image = left1;
+                    }
+                    if (spriteNum == 3 || spriteNum == 6) {
+                        image = left3;
+                    }
+                    break;
 
-            case "left":
-                if (spriteNum == 1 || spriteNum == 4) {
-                    image = left1;
-                }
-                if (spriteNum == 2 || spriteNum == 5) {
-                    image = left1;
-                }
-                if (spriteNum == 3 || spriteNum == 6) {
-                    image = left3;
-                }
-                break;
+                case "down":
+                    if (spriteNum == 1 || spriteNum == 4) {
+                        image = down1;
+                    }
+                    if (spriteNum == 2 || spriteNum == 5) {
+                        image = nothing1;
+                    }
+                    if (spriteNum == 3 || spriteNum == 6) {
+                        image = down2;
+                    }
+                    break;
 
-            case "down":
-                if (spriteNum ==1 || spriteNum == 4) {
-                    image = down1;
-                }
-                if (spriteNum == 2 || spriteNum == 5) {
-                    image = nothing1;
-                }
-                if (spriteNum == 3 || spriteNum == 6) {
-                    image = down2;
-                }
-                break;
+                case "nothing":
+                    if (spriteNum == 1 || spriteNum == 4) {
+                        image = nothing1;
+                    }
+                    if (spriteNum == 2 || spriteNum == 5) {
+                        image = nothing2;
+                    }
+                    if (spriteNum == 3 || spriteNum == 6) {
+                        image = nothing3;
+                    }
+                    break;
 
-            case "nothing":
-                if (spriteNum == 1 || spriteNum == 4) {
-                    image = nothing1;
-                }
-                if (spriteNum == 2 || spriteNum == 5) {
-                    image = nothing2;
-                }
-                if (spriteNum == 3 || spriteNum == 6) {
-                    image = nothing3;
-                }
-                break;
+            }
+            g2.drawImage(image, screenX, screenY, null);
 
         }
-        g2.drawImage(image, screenX,screenY , null);
+
 
     }
-
-}

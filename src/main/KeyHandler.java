@@ -13,6 +13,7 @@ public class KeyHandler implements KeyListener, MouseListener {
     public boolean leftPressed;
     public boolean rightPressed;
     public boolean downPressed;
+    public boolean enterPressed;
 
     public KeyHandler(GamePanel gp) {
         this.gp =gp;
@@ -27,6 +28,8 @@ public class KeyHandler implements KeyListener, MouseListener {
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 
+
+        //TITLE STATE
         if(gp.gameState == gp.titleState) {
             if (code == KeyEvent.VK_W){
                 gp.ui.commandNum--;
@@ -54,26 +57,43 @@ public class KeyHandler implements KeyListener, MouseListener {
             }
         }
 
-        if (code == KeyEvent.VK_W) {
-            upPressed = true;
+        //PLAY STATE
+        if(gp.gameState == gp.playState) {
 
-        }
-        if (code == KeyEvent.VK_A) {
-            leftPressed = true;
+            if (code == KeyEvent.VK_W) {
+                upPressed = true;
 
-        }
+            }
+            if (code == KeyEvent.VK_A) {
+                leftPressed = true;
 
-        if (code == KeyEvent.VK_D) {
-            rightPressed = true;
+            }
+            if (code == KeyEvent.VK_D) {
+                rightPressed = true;
 
-        }
-        if (code == KeyEvent.VK_S) {
-            downPressed = true;
-        }
-        if (code == KeyEvent.VK_ESCAPE) {
-            if (gp.gameState == gp.playState) {
+            }
+            if (code == KeyEvent.VK_S) {
+                downPressed = true;
+            }
+            if (code == KeyEvent.VK_ENTER){
+                enterPressed = true;
+            }
+            if (code == KeyEvent.VK_ESCAPE) {
                 gp.gameState = gp.pauseState;
-            } else if (gp.gameState == gp.pauseState) {
+
+                }
+            }
+
+        //PAUSE STATE
+        if(gp.gameState == gp.pauseState) {
+        if (code == KeyEvent.VK_ESCAPE) {
+        gp.gameState = gp.playState;
+            }
+        }
+
+        // DIALOGUE STATE
+        if(gp.gameState == gp.dialogueState) {
+            if(code == KeyEvent.VK_ENTER) {
                 gp.gameState = gp.playState;
             }
         }

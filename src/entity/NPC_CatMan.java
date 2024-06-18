@@ -13,6 +13,7 @@ public class NPC_CatMan extends Entity {
             super(gp);
             direction = "nothing";
             getImage();
+            setDialogue();
         }
         public void getImage() {
 
@@ -23,8 +24,11 @@ public class NPC_CatMan extends Entity {
         }
 
         public void setDialogue() {
-
-
+            dialogues[0] = "Sei gegrüßt tapferer Held! *meow*";
+            dialogues[1] = "Eh! Warum du hier bist? \nDas solltest du doch wissen!";
+            dialogues[2] = "Rette unser Dorf! *meow*";
+            dialogues[3] = "Beschütze die Dorfbewohner, indem \ndu die Dracheneier aus den Krallen der \nMutter befreist!";
+            dialogues[4] = "Let’s go!!!! *meow*";
         }
         public BufferedImage setup(String imagePath) {
 
@@ -42,6 +46,11 @@ public class NPC_CatMan extends Entity {
         }
 
     public void speak() {
-        //this.gp.ui.currentDialogue = this.dialogues[0];
+            if(dialogues[dialogueIndex] == null){
+                dialogueIndex = 0;
+                gp.gameState = gp.playState;;
+            }
+            this.gp.ui.currentDialogue = this.dialogues[dialogueIndex];
+            dialogueIndex++;
     }
 }

@@ -4,6 +4,7 @@ import javax.swing.*;
 
 public class mainclass {
 
+
     public static void main(String[] args) {
 
         JFrame window = new JFrame();
