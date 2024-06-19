@@ -88,3 +88,7 @@ true
 true
 44.png
 false
+45.png
+false
+46.png
+false

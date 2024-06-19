@@ -48,6 +48,9 @@ public class EventHandler {
         else if (hit(0,15,57,"left")== true) {
         teleport(1, 15, 56);
         }
+        else if (hit(0,67,37,"left")== true) {
+            teleport(1, 15, 56);
+        }
     }
 
     public boolean hit(int map, int col, int row, String reqDirection){
