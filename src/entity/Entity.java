@@ -151,8 +151,12 @@ public class Entity {
 
 
             }
-
-            g2.drawImage(image, screenX, screenY, 52, 81, null);
+            if(gp.currentMap == 0){
+                g2.drawImage(image, screenX, screenY, 52, 81, null);
+            }
+            else if(gp.currentMap == 2){
+                g2.drawImage(image, screenX, screenY, 32, 32, null);
+            }
         }
 
     }

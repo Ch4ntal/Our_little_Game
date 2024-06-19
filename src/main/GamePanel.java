@@ -27,7 +27,7 @@ public class GamePanel extends JPanel implements Runnable {
     public  int maxWorldCol =100;
     public  int maxWorldRow =100;
     public final int maxMap = 10;
-    public int currentMap = 1;
+    public int currentMap = 2;
 
 
 

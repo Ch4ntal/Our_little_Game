@@ -13,6 +13,7 @@ public class Sound {
     public Sound(){
         soundURL[0] = getClass().getResource("/sound/Dragonexplorer.wav");
     }
+
     public void setFile(int i) {
         try {
             AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);

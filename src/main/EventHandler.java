@@ -48,8 +48,8 @@ public class EventHandler {
         else if (hit(0,15,57,"left")== true) {
         teleport(1, 15, 56);
         }
-        else if (hit(0,67,37,"left")== true) {
-            teleport(1, 15, 56);
+        else if (hit(0,65,36,"left")== true) {
+            teleport(2, 6, 50);
         }
     }
 

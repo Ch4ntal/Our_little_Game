@@ -27,7 +27,7 @@ public class Player extends Entity {
         solidArea.x = 14;
         solidArea.y = 52;
         solidArea.width = 15;
-        solidArea.height = 20;
+        solidArea.height = 15;
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY = solidArea.y;
 
@@ -39,11 +39,14 @@ public class Player extends Entity {
     public void setDefaultValues() {
 
         //Startpoint:
-        worldX = gp.tileSize * 15;
-        worldY = gp.tileSize * 57;
-        speed = 4;
+
+       // worldX = gp.tileSize * 15;
+       // worldY = gp.tileSize * 57;
+        worldX = gp.tileSize*6;
+        worldY = gp.tileSize*49;
+        speed = 20;
         direction = "nothing";
-        gravity = 0;
+       gravity = 0;
         jumpheight = 8;
     }
 
