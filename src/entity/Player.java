@@ -39,7 +39,7 @@ public class Player extends Entity {
     public void setDefaultValues() {
 
         //Startpoint:
-        worldX = gp.tileSize * 17;
+        worldX = gp.tileSize * 15;
         worldY = gp.tileSize * 57;
         speed = 4;
         direction = "nothing";
@@ -149,7 +149,7 @@ public class Player extends Entity {
 
             if (gp.keyH.enterPressed == true) {
                 gp.gameState = gp.dialogueState; //  gp.gameState = gp.dialogueState;
-                gp.npc[i].speak();
+                gp.npc[gp.currentMap][i].speak();
             }
         }
     }

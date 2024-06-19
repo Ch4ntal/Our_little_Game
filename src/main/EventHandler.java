@@ -3,56 +3,84 @@ package main;
 
 import java.awt.Rectangle;
 
+
 public class EventHandler {
     GamePanel gp;
-    Rectangle eventRect;
-    int eventRectDefaultX, eventRectDefaultY;
+    EventRect eventRect[][][];
+
+    int previousEventX, previousEventY;
+    boolean canTouchEvent = true;
 
     public EventHandler(GamePanel gp){
         this.gp = gp;
 
-        eventRect = new Rectangle();
-        eventRect.x = 23;
-        eventRect.y = 23;
-        eventRect.width = 2;
-        eventRect.height = 2;
-        eventRectDefaultX = eventRect.x;
-        eventRectDefaultY = eventRect.y;
-    }
+        eventRect = new EventRect[gp.maxMap][gp.maxWorldCol][gp.maxWorldRow];
+        int map = 0;
+        int col = 0;
+        int row = 0;
+        while(map < gp.maxMap && col < gp.maxWorldCol && row < gp.maxWorldRow){
+            eventRect[map][col][row] = new EventRect();
+            eventRect[map][col][row].x = 40;
+            eventRect[map][col][row].y = 35;
+            eventRect[map][col][row].width= 8;
+            eventRect[map][col][row].height= 8;
+            eventRect[map][col][row].eventRectDefaultX = eventRect[map][col][row].x;
+            eventRect[map][col][row].eventRectDefaultY = eventRect[map][col][row].y;
 
-    public void checkEvent() {
-        if(hit(19,57,"down")== true){
-            teleport(gp.dialogueState);
-        }
-    }
+            col++;
+            if(col == gp.maxWorldCol){
+                col = 0;
+                row ++;
 
-    public boolean hit(int eventCol, int eventRow, String reqDirection){
-        boolean hit = false;
-
-        gp.player.solidArea.x = gp.player.worldX + gp.player.solidArea.x;
-        gp.player.solidArea.y = gp.player.worldY + gp.player.solidArea.y;
-        eventRect.x = eventCol*gp.tileSize + eventRect.x;
-        eventRect.y = eventRow*gp.tileSize + eventRect.y;
-
-        if(gp.player.solidArea.intersects(eventRect)) {
-            if(gp.player.direction.contentEquals(reqDirection) || reqDirection.contentEquals("any")){
-                hit = true;
+                if(row == gp.maxWorldRow) {
+                    row = 0;
+                    map++;
+                }
             }
         }
 
-        gp.player.solidArea.x = gp.player.solidAreaDefaultX;
-        gp.player.solidArea.y = gp.player.solidAreaDefaultY;
-        eventRect.x = eventRectDefaultX;
-        eventRect.y = eventRectDefaultY;
+    }
+
+    public void checkEvent() {
+        if(hit(1,16,57,"right")== true){
+            teleport(0,17, 57);
+        }
+        else if (hit(0,15,57,"left")== true) {
+        teleport(1, 15, 56);
+        }
+    }
+
+    public boolean hit(int map, int col, int row, String reqDirection){
+        boolean hit = false;
+
+        if (map == gp.currentMap) {
+            gp.player.solidArea.x = gp.player.worldX + gp.player.solidArea.x;
+            gp.player.solidArea.y = gp.player.worldY + gp.player.solidArea.y;
+            eventRect[map][col][row].x = col*gp.tileSize + eventRect[map][col][row].x;
+            eventRect[map][col][row].y = row*gp.tileSize + eventRect[map][col][row].y;
+
+            if(gp.player.solidArea.intersects(eventRect[map][col][row])) {
+                if(gp.player.direction.contentEquals(reqDirection) || reqDirection.contentEquals("any")){
+                    hit = true;
+                }
+            }
+
+            gp.player.solidArea.x = gp.player.solidAreaDefaultX;
+            gp.player.solidArea.y = gp.player.solidAreaDefaultY;
+            eventRect[map][col][row].x = eventRect[map][col][row].eventRectDefaultX;
+            eventRect[map][col][row].y = eventRect[map][col][row].eventRectDefaultY;
+
+        }
+
 
         return hit;
     }
 
-    public void teleport(int gameState) {
-        gp.gameState = gameState;
+    public void teleport( int map, int col, int row) {
+        gp.currentMap = map;
         gp.ui.currentDialogue = "Teleport!";
-        gp.player.worldX = gp.tileSize*37;
-        gp.player.worldY = gp.tileSize*63;
+        gp.player.worldX = gp.tileSize*col;
+        gp.player.worldY = gp.tileSize*row;
 
     }
 }

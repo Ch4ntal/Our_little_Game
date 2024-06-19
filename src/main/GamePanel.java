@@ -26,8 +26,8 @@ public class GamePanel extends JPanel implements Runnable {
     // World Settings
     public  int maxWorldCol =100;
     public  int maxWorldRow =100;
-    public final int worldWidth = tileSize * maxWorldCol;
-    public final int worldHeight = tileSize * maxWorldRow;
+    public final int maxMap = 10;
+    public int currentMap = 1;
 
 
 
@@ -43,7 +43,7 @@ public class GamePanel extends JPanel implements Runnable {
     public CollisionChecker cChecker = new CollisionChecker(this);
     public Player player = new Player(this,keyH);
 
-    public Entity npc[] = new Entity[10];
+    public Entity npc[][] = new Entity[maxMap][10];
 
     //GAME STATE
     public int gameState;
@@ -118,9 +118,9 @@ public class GamePanel extends JPanel implements Runnable {
         if (gameState == playState) {
             player.update();
             //NPC
-            for(int i = 0; i < npc.length; i++){
-                if(npc[i] != null){
-                    npc[i].update();
+            for(int i = 0; i < npc[1].length; i++){
+                if(npc[currentMap][i] != null){
+                    npc[currentMap][i].update();
                 }
             }
 
@@ -144,9 +144,9 @@ public class GamePanel extends JPanel implements Runnable {
             tileM.draw(g2);
 
             //NPC
-            for (int i = 0; i <  npc.length; i++){
-                if(npc[i] != null) {
-                    npc[i].draw(g2);
+            for (int i = 0; i <  npc[1].length; i++){
+                if(npc[currentMap][i] != null) {
+                    npc[currentMap][i].draw(g2);
                 }
             }
 

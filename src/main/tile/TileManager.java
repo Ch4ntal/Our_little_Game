@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class TileManager {
     GamePanel gp;
     public Tile[] tile;
-    public int mapTileNum[][];
+    public int mapTileNum[][][];
     boolean drawPath = false;
     ArrayList<String> fileNames = new ArrayList<>();
     ArrayList<String> collisionStatus = new ArrayList<>();
@@ -56,7 +56,7 @@ public class TileManager {
             gp.maxWorldCol = maxTile.length;
             gp.maxWorldRow = maxTile.length;
 
-            mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
+            mapTileNum = new int[gp.maxMap][gp.maxWorldCol][gp.maxWorldRow];
 
             br.close();
 
@@ -64,7 +64,8 @@ public class TileManager {
             System.out.println("Exeption!");;
         }
 
-        loadMap("/maps/MainWorld01.txt");
+        loadMap("/maps/MainWorld01.txt", 0);
+        loadMap("/maps/house.txt", 1);
     }
 
     public void getTileImage() {
@@ -100,7 +101,7 @@ public class TileManager {
             e.printStackTrace();
         }
     }
-    public void loadMap(String filePath){
+    public void loadMap(String filePath, int map){
         try{
             InputStream is = getClass().getResourceAsStream(filePath);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -112,7 +113,7 @@ public class TileManager {
                 while (col < gp.maxWorldCol) {
                     String numbers[] = line.split(" ");
                     int num = Integer.parseInt(numbers[col]);
-                    mapTileNum[col][row] = num;
+                    mapTileNum[map][col][row] = num;
                     col++;
                 }
                 if (col == gp.maxWorldCol) {
@@ -134,7 +135,7 @@ public class TileManager {
 
         while (worldCol < gp.maxWorldCol && worldRow < gp.maxWorldRow) {
 
-            int tileNum = mapTileNum[worldCol][worldRow];
+            int tileNum = mapTileNum[gp.currentMap][worldCol][worldRow];
 
             int worldX = worldCol * gp.tileSize;
             int worldY = worldRow * gp.tileSize;

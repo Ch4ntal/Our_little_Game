@@ -12,9 +12,10 @@ public class AssetSetter {
 
     }
     public void setNPC() {
-        gp.npc[0] = new NPC_CatMan(gp);
-        gp.npc[0].worldX = gp.tileSize * 17;
-        gp.npc[0].worldY = gp.tileSize * 56 - 20;
+        int mapNum = 0;
+        gp.npc[mapNum][0] = new NPC_CatMan(gp);
+        gp.npc[mapNum][0].worldX = gp.tileSize * 17;
+        gp.npc[mapNum][0].worldY = gp.tileSize * 56 - 20;
 
     }
 

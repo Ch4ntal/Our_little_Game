@@ -7,7 +7,7 @@ false
 03.png
 true
 04.png
-true
+false
 05.png
 true
 06.png
@@ -63,7 +63,7 @@ true
 31.png
 true
 32.png
-true
+false
 33.png
 true
 34.png
@@ -84,3 +84,7 @@ true
 true
 42.png
 true
+43.png
+true
+44.png
+false
